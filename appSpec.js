@@ -117,14 +117,14 @@
 			});
 
 			it("should return the new players turn once a turn is taken", function(){
-				expect(app.turn(0,0)).toBe(app.Y);
+				expect(app.turn(0,0)).toBe(app.O);
 			});
 
 			it("should alternate turns", function(){
 				app.turn(0,0);
 				app.turn(0,1);
 
-				expect(app.get(0,1)).toBe(app.Y);
+				expect(app.get(0,1)).toBe(app.O);
 			});
 
 			it("should not allow moving where there has been a move already", function(){
@@ -133,6 +133,44 @@
 				expect(function(){
 					app.turn(0,0);
 				}).toThrow();
+			});
+		});
+
+		describe("winning", function(){
+			it("should not be a win in the initial state", function(){
+				expect(app.winning()).toBe(undefined);
+			});
+
+			it("should be a win when you get three in a row vertically", function(){
+				app.set(0,0, app.X);
+				app.set(0,1, app.X);
+				app.set(0,2, app.X);
+
+				expect(app.winning()).toBe(app.X);
+			});
+
+			it("should be a win when you get three in a row horizontally", function(){
+				app.set(0,1, app.O);
+				app.set(1,1, app.O);
+				app.set(2,1, app.O);
+
+				expect(app.winning()).toBe(app.O);
+			});
+
+			it("should be a win when you get three in a row diagonally", function(){
+				app.set(0,0, app.O);
+				app.set(1,1, app.O);
+				app.set(2,2, app.O);
+
+				expect(app.winning()).toBe(app.O);
+			});
+
+			it("should be a win when you get three in a row diagonally the other way", function(){
+				app.set(0,2, app.O);
+				app.set(1,1, app.O);
+				app.set(2,0, app.O);
+
+				expect(app.winning()).toBe(app.O);
 			});
 		});
 	});
